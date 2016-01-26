@@ -10,6 +10,9 @@ Features
 
 Usage
 ---------
+
+```go
+
     package main
     import (
         "github.com/foolin/gocsv"
@@ -65,7 +68,7 @@ Usage
 
     }
 
-
+```
 
 csv file:
 
@@ -76,7 +79,7 @@ csv file:
     6,水元素,0.8
 
 
-result:
+output:
 
     ------------- read map  -------------
     []map[string]interface {}{map[string]interface {}{"price":5999.99, "id":1, "name":"苹果"}, map[string]interface {}{"
