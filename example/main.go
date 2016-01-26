@@ -17,7 +17,8 @@ func main() {
 
 	//======================= read map[string]interface{} ===================//
 	fmt.Println("\n------------- read map  -------------")
-	data, err := gocsv.ReadMap("data.csv", false)
+	//datautf8.csv utf8 file
+	data, err := gocsv.ReadMap("datautf8.csv", true)
 	if err != nil {
 		panic(fmt.Sprintf("read error: %v", err))
 		return
@@ -28,6 +29,7 @@ func main() {
 	//======================= read object ===================//
 	fmt.Println("\n------------- read object  -------------")
 	var out []Goods
+	//data.csv ANSI(excel default)
 	err = gocsv.ReadObject("data.csv", false, &out)
 	if err != nil {
 		fmt.Printf("read error: %v", err)
