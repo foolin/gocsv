@@ -75,11 +75,12 @@ func main() {
 
 csv file:
 
-    id,名称,价格
+    Goods Id,Goods Name,价格
     id,name,price
     int,string,float
-    1,苹果,5999.99
+    1,Apple,5999.99
     2,小米,3.89
+
 
 
 output:
