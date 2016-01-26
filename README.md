@@ -72,11 +72,11 @@ Usage
 
 csv file:
 
-    id,名称,折扣比例
-    id,name,percent
+    id,名称,价格
+    id,name,price
     int,string,float
-    5,元素（随机抽）,0.8
-    6,水元素,0.8
+    1,苹果,5999.99
+    2,小米,3.89
 
 
 output:
