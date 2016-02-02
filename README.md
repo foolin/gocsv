@@ -11,6 +11,13 @@ Features
 Usage
 ---------
 
+Install:
+
+    go get github.com/foolin/gocsv
+
+
+Example:
+
 ```go
 
 package main
@@ -73,7 +80,7 @@ func main() {
 
 ```
 
-csv file:
+Csv:
 
     Goods Id,Goods Name,价格
     id,name,price
@@ -83,7 +90,7 @@ csv file:
 
 
 
-output:
+Output:
 
     ------------- read map  -------------
     []map[string]interface {}{map[string]interface {}{"id":1, "name":"Apple", "price":5999.99}, map[string]interface {}{"id":2, "name":"小米", "price":3.89}}
