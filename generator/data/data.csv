@@ -1,0 +1,5 @@
+Goods Id,Goods Name,价格
+id,name,price
+int,string,float
+1,Apple,5999.99
+2,小米,3.89
