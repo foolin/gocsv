@@ -30,7 +30,7 @@ func main() {
 	fmt.Println("\n------------- read object  -------------")
 	var out []Goods
 	//data.csv ANSI(excel default)
-	err = gocsv.ReadObject("data.csv", false, &out)
+	err = gocsv.ReadList("data.csv", false, &out)
 	if err != nil {
 		fmt.Printf("read error: %v", err)
 		return

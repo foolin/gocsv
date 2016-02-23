@@ -100,7 +100,7 @@ func ReadMap(file string, isUtf8 bool) ([]map[string]interface{}, error) {
 }
 
 //ReadObject read for struct
-func ReadObject(file string, isUtf8 bool, out interface{}) error {
+func ReadList(file string, isUtf8 bool, out interface{}) error {
 
 	if out == nil {
 		return errors.New("Cannot remake from <nil>")
