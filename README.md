@@ -38,9 +38,9 @@ func main() {
 	var err error
 
 	//======================= read map[string]interface{} ===================//
-	fmt.Println("\n------------- read map  -------------")
+	fmt.Println("\n------------- read  -------------")
 	//datautf8.csv utf8 file
-	data, err := gocsv.ReadMap("datautf8.csv", true)
+	data, err := gocsv.Read("datautf8.csv", true)
 	if err != nil {
 		panic(fmt.Sprintf("read error: %v", err))
 		return
@@ -48,21 +48,33 @@ func main() {
 	fmt.Printf("%#v\n", data)
 
 
-	//======================= read object ===================//
+	//======================= read list ===================//
 	fmt.Println("\n------------- read object  -------------")
-	var out []Goods
+	var list []Goods
 	//data.csv ANSI(excel default)
-	err = gocsv.ReadList("data.csv", false, &out)
+	err = gocsv.ReadList("data.csv", false, &list)
 	if err != nil {
 		fmt.Printf("read error: %v", err)
 		return
 	}
-	fmt.Printf("%#v\n", out)
+	fmt.Printf("%#v\n", list)
+
+
+	//======================= read map ===================//
+	fmt.Println("\n------------- read object  -------------")
+	var vmap map[int]Goods
+	//data.csv ANSI(excel default)
+	err = gocsv.ReadMap("data.csv", false, "id", &vmap)
+	if err != nil {
+		fmt.Printf("read error: %v", err)
+		return
+	}
+	fmt.Printf("%#v\n", vmap)
 
 	//======================= read parser ===================//
 	fmt.Println("\n------------- read parser  -------------")
 	line := 1
-	err = gocsv.Read("data.csv", false, func(fields []gocsv.Field) error {
+	err = gocsv.ReadRaw("data.csv", false, func(fields []gocsv.Field) error {
 		fmt.Printf("-line %v\n", line)
 		for _, f := range fields {
 			fmt.Printf("%#v\n", f)
@@ -76,6 +88,7 @@ func main() {
 	}
 
 }
+
 
 
 ```
@@ -92,12 +105,17 @@ Csv:
 
 Output:
 
-    ------------- read map  -------------
-    []map[string]interface {}{map[string]interface {}{"id":1, "name":"Apple", "price":5999.99}, map[string]interface {}{"id":2, "name":"小米", "price":3.89}}
+```go
 
+    ------------- read  -------------
+    []map[string]interface {}{map[string]interface {}{"id":1, "name":"Apple", "price":5999.99}, map[string]interface {}{"price":3.89, "id":2, "name":"小米"}}
+    
     ------------- read object  -------------
     []main.Goods{main.Goods{ID:1, Name:"Apple", Cost:5999.99}, main.Goods{ID:2, Name:"小米", Cost:3.89}}
-
+    
+    ------------- read object  -------------
+    map[int]main.Goods{1:main.Goods{ID:1, Name:"Apple", Cost:5999.99}, 2:main.Goods{ID:2, Name:"小米", Cost:3.89}}
+    
     ------------- read parser  -------------
     -line 1
     gocsv.Field{Name:"id", Value:"1", Kind:"int"}
@@ -107,3 +125,6 @@ Output:
     gocsv.Field{Name:"id", Value:"2", Kind:"int"}
     gocsv.Field{Name:"name", Value:"小米", Kind:"string"}
     gocsv.Field{Name:"price", Value:"3.89", Kind:"float"}
+
+```
+
