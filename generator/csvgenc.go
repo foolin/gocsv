@@ -13,6 +13,7 @@ import (
 	"flag"
 	"io/ioutil"
 	"path"
+"unicode"
 )
 
 
@@ -146,7 +147,22 @@ func upper(str string) string {
 	if str == ""{
 		return str
 	}
-	return strings.ToUpper(str[:1]) + str[1:]
+	ret := make([]rune, 0)
+	isNeedUpper  := true	//首字母大写
+	for _, c := range str{
+		//log.Printf("%#v\n", c)
+		if c == '_'{
+			isNeedUpper = true	//下划线大写
+			continue
+		}
+		if isNeedUpper{
+			ret = append(ret, unicode.ToUpper(c))
+		}else{
+			ret = append(ret, c)
+		}
+		isNeedUpper = false
+	}
+	return string(ret)
 }
 
 func filename(filename string) string {
