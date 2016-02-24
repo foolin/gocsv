@@ -27,7 +27,7 @@ func main() {
 
 
 	//======================= read list ===================//
-	fmt.Println("\n------------- read object  -------------")
+	fmt.Println("\n------------- read list  -------------")
 	var list []Goods
 	//data.csv ANSI(excel default)
 	err = gocsv.ReadList("data.csv", false, &list)
@@ -39,7 +39,7 @@ func main() {
 
 
 	//======================= read map ===================//
-	fmt.Println("\n------------- read object  -------------")
+	fmt.Println("\n------------- read map  -------------")
 	var vmap map[int]Goods
 	//data.csv ANSI(excel default)
 	err = gocsv.ReadMap("data.csv", false, "id", &vmap)

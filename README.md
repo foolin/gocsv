@@ -108,12 +108,12 @@ Output:
 ```go
 
     ------------- read  -------------
-    []map[string]interface {}{map[string]interface {}{"id":1, "name":"Apple", "price":5999.99}, map[string]interface {}{"price":3.89, "id":2, "name":"小米"}}
+    []map[string]interface {}{map[string]interface {}{"id":1, "name":"Apple", "price":5999.99}, map[string]interface {}{"id":2, "name":"小米", "price":3.89}}
     
-    ------------- read object  -------------
+    ------------- read list  -------------
     []main.Goods{main.Goods{ID:1, Name:"Apple", Cost:5999.99}, main.Goods{ID:2, Name:"小米", Cost:3.89}}
     
-    ------------- read object  -------------
+    ------------- read map  -------------
     map[int]main.Goods{1:main.Goods{ID:1, Name:"Apple", Cost:5999.99}, 2:main.Goods{ID:2, Name:"小米", Cost:3.89}}
     
     ------------- read parser  -------------
