@@ -1,6 +1,6 @@
 # gocsv
 
-go csv helper
+go csv helper, read csv and unmarshal for struct, map, list.
 
 Features
 ---------
