@@ -4,8 +4,8 @@ go csv helper
 
 Features
 ---------
-
 * Read for struct/map/parser
+* Support generator struct
 * Support encoding
 
 Usage
