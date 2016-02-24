@@ -30,7 +30,7 @@ import (
 type Goods struct {
 	ID   int `csv:"id"`	//id => ID
 	Name string	// name => Name (default, first letter lowercase)
-	Cost float64 `csv:"price"`	// rename price => cost
+	Price float64 `csv:"cost"`	// rename price => cost
 }
 
 func main() {
@@ -49,7 +49,7 @@ func main() {
 
 
 	//======================= read list ===================//
-	fmt.Println("\n------------- read object  -------------")
+	fmt.Println("\n------------- read list  -------------")
 	var list []Goods
 	//data.csv ANSI(excel default)
 	err = gocsv.ReadList("data.csv", false, &list)
@@ -61,7 +61,7 @@ func main() {
 
 
 	//======================= read map ===================//
-	fmt.Println("\n------------- read object  -------------")
+	fmt.Println("\n------------- read map  -------------")
 	var vmap map[int]Goods
 	//data.csv ANSI(excel default)
 	err = gocsv.ReadMap("data.csv", false, "id", &vmap)
@@ -91,15 +91,16 @@ func main() {
 
 
 
+
 ```
 
 Csv:
 
-    Goods Id,Goods Name,价格
-    id,name,price
+    Goods Id,Goods Name,Sell Price
+    id,name,cost
     int,string,float
-    1,Apple,5999.99
-    2,小米,3.89
+    1,Apple iPhone 6s,5999.99
+    2,Other Mobile Phone,699.99
 
 
 
@@ -107,24 +108,24 @@ Output:
 
 ```go
 
-    ------------- read  -------------
-    []map[string]interface {}{map[string]interface {}{"id":1, "name":"Apple", "price":5999.99}, map[string]interface {}{"id":2, "name":"小米", "price":3.89}}
-    
-    ------------- read list  -------------
-    []main.Goods{main.Goods{ID:1, Name:"Apple", Cost:5999.99}, main.Goods{ID:2, Name:"小米", Cost:3.89}}
-    
-    ------------- read map  -------------
-    map[int]main.Goods{1:main.Goods{ID:1, Name:"Apple", Cost:5999.99}, 2:main.Goods{ID:2, Name:"小米", Cost:3.89}}
-    
-    ------------- read parser  -------------
-    -line 1
-    gocsv.Field{Name:"id", Value:"1", Kind:"int"}
-    gocsv.Field{Name:"name", Value:"Apple", Kind:"string"}
-    gocsv.Field{Name:"price", Value:"5999.99", Kind:"float"}
-    -line 2
-    gocsv.Field{Name:"id", Value:"2", Kind:"int"}
-    gocsv.Field{Name:"name", Value:"小米", Kind:"string"}
-    gocsv.Field{Name:"price", Value:"3.89", Kind:"float"}
+------------- read  -------------
+[]map[string]interface {}{map[string]interface {}{"id":1, "name":"Apple iPhone 6s", "cost":5999.99}, map[string]interface {}{"id":2, "name":"Other Mobile Phone", "cost":699.99}}
+
+------------- read list  -------------
+[]main.Goods{main.Goods{ID:1, Name:"Apple iPhone 6s", Price:5999.99}, main.Goods{ID:2, Name:"Other Mobile Phone", Price:699.99}}
+
+------------- read map  -------------
+map[int]main.Goods{1:main.Goods{ID:1, Name:"Apple iPhone 6s", Price:5999.99}, 2:main.Goods{ID:2, Name:"Other Mobile Phone", Price:699.99}}
+
+------------- read parser  -------------
+-line 1
+gocsv.Field{Name:"id", Value:"1", Kind:"int"}
+gocsv.Field{Name:"name", Value:"Apple iPhone 6s", Kind:"string"}
+gocsv.Field{Name:"cost", Value:"5999.99", Kind:"float"}
+-line 2
+gocsv.Field{Name:"id", Value:"2", Kind:"int"}
+gocsv.Field{Name:"name", Value:"Other Mobile Phone", Kind:"string"}
+gocsv.Field{Name:"cost", Value:"699.99", Kind:"float"}
 
 ```
 

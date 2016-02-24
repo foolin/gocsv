@@ -8,7 +8,7 @@ import (
 type Goods struct {
 	ID   int `csv:"id"`	//id => ID
 	Name string	// name => Name (default, first letter lowercase)
-	Cost float64 `csv:"price"`	// rename price => cost
+	Price float64 `csv:"cost"`	// rename price => cost
 }
 
 func main() {

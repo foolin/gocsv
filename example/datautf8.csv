@@ -1,5 +1,5 @@
-﻿Goods Id,Goods Name,价格
-id,name,price
+﻿Goods Id,Goods Name,Sell Price
+id,name,cost
 int,string,float
-1,Apple,5999.99
-2,小米,3.89
+1,Apple iPhone 6s,5999.99
+2,Other Mobile Phone,699.99
