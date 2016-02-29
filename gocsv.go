@@ -10,7 +10,6 @@ import (
 	"golang.org/x/text/encoding/simplifiedchinese"
 	"reflect"
 	"strings"
-	"log"
 )
 
 //Field field info
@@ -23,7 +22,6 @@ type Field struct {
 
 //Read read for map array
 func Read(file string, isUtf8 bool) ([]map[string]interface{}, error) {
-	defer catch(file)
 
 	list := make([]map[string]interface{}, 0);
 	err := ReadRaw(file, isUtf8, func(fields []Field) error {
@@ -58,7 +56,6 @@ func Read(file string, isUtf8 bool) ([]map[string]interface{}, error) {
 
 //ReadList read for []struct
 func ReadList(file string, isUtf8 bool, out interface{}) error {
-	defer catch(file)
 
 	if out == nil {
 		return errors.New("Cannot remake from <nil>")
@@ -130,7 +127,6 @@ func ReadList(file string, isUtf8 bool, out interface{}) error {
 
 //ReadList read for map[interface{}]struct
 func ReadMap(file string, isUtf8 bool, keyField string, out interface{}) error {
-	defer catch(file)
 
 	if out == nil {
 		return errors.New("Cannot remake from <nil>")
@@ -260,10 +256,4 @@ func ReadRaw(file string, isUtf8 bool, handle func([]Field) error) error {
 //format format name
 func format(name string) string {
 	return fmt.Sprintf("%v%v", strings.ToLower(name[0:1]), name[1:])
-}
-
-func catch(file string)  {
-	if err := recover(); err != nil{
-		log.Panicf("read csv file: %v, error: %v", file, err)
-	}
 }
