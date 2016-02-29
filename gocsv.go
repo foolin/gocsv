@@ -21,10 +21,16 @@ type Field struct {
 
 
 //Read read for map array
-func Read(file string, isUtf8 bool) ([]map[string]interface{}, error) {
+func Read(file string, isUtf8 bool) (list []map[string]interface{}, err error) {
+	//catch panic
+	defer func() {
+		if rerr := recover(); rerr != nil {
+			err = errors.New(fmt.Sprintf("read csv file: %v, error: %v", file, rerr))
+		}
+	}()
 
-	list := make([]map[string]interface{}, 0);
-	err := ReadRaw(file, isUtf8, func(fields []Field) error {
+	list = make([]map[string]interface{}, 0);
+	err = ReadRaw(file, isUtf8, func(fields []Field) error {
 		item := make(map[string]interface{})
 		for _, f := range fields {
 			if len(f.Name) <= 0 {
@@ -55,7 +61,13 @@ func Read(file string, isUtf8 bool) ([]map[string]interface{}, error) {
 }
 
 //ReadList read for []struct
-func ReadList(file string, isUtf8 bool, out interface{}) error {
+func ReadList(file string, isUtf8 bool, out interface{}) (err error) {
+	//catch panic
+	defer func() {
+		if rerr := recover(); rerr != nil {
+			err = errors.New(fmt.Sprintf("read csv file: %v, error: %v", file, rerr))
+		}
+	}()
 
 	if out == nil {
 		return errors.New("Cannot remake from <nil>")
@@ -89,7 +101,7 @@ func ReadList(file string, isUtf8 bool, out interface{}) error {
 		idxs[format(name)] = i
 	}
 
-	err := ReadRaw(file, isUtf8, func(fields []Field) error {
+	err = ReadRaw(file, isUtf8, func(fields []Field) error {
 		elmv := reflect.Indirect(reflect.New(elmt))
 		for _, f := range fields {
 			if len(f.Name) <= 0 {
@@ -126,7 +138,13 @@ func ReadList(file string, isUtf8 bool, out interface{}) error {
 
 
 //ReadList read for map[interface{}]struct
-func ReadMap(file string, isUtf8 bool, keyField string, out interface{}) error {
+func ReadMap(file string, isUtf8 bool, keyField string, out interface{}) (err error) {
+	//catch panic
+	defer func() {
+		if rerr := recover(); rerr != nil {
+			err = errors.New(fmt.Sprintf("read csv file: %v, error: %v", file, rerr))
+		}
+	}()
 
 	if out == nil {
 		return errors.New("Cannot remake from <nil>")
@@ -165,7 +183,7 @@ func ReadMap(file string, isUtf8 bool, keyField string, out interface{}) error {
 		idxs[format(name)] = i
 	}
 
-	err := ReadRaw(file, isUtf8, func(fields []Field) error {
+	err = ReadRaw(file, isUtf8, func(fields []Field) error {
 		elmv := reflect.Indirect(reflect.New(elmt))
 		keyi := 0
 		for _, f := range fields {
@@ -207,9 +225,19 @@ func ReadMap(file string, isUtf8 bool, keyField string, out interface{}) error {
 
 
 //Read read csv for handle
-func ReadRaw(file string, isUtf8 bool, handle func([]Field) error) error {
+func ReadRaw(file string, isUtf8 bool, handle func([]Field) error) (err error) {
+	//catch panic
+	defer func() {
+		if rerr := recover(); rerr != nil {
+			err = errors.New(fmt.Sprintf("read csv file: %v, error: %v", file, rerr))
+		}
+	}()
+
 	//open file
 	fi, err := os.Open(file)
+	if err != nil {
+		return err
+	}
 	defer fi.Close()
 	//get reader
 	var reader *csv.Reader
