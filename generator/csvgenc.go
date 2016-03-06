@@ -71,7 +71,7 @@ func main() {
 type Goods struct {
 	ID   int `csv:"id"`        //id => ID
 	Name string                // name => Name (default, first letter lowercase)
-	Cost float64 `csv:"price"` // rename price => cost
+	Cost float32 `csv:"price"` // rename price => cost
 }
 
 func write(csvfile string, outfile string, isUtf8 bool) error {
@@ -122,7 +122,7 @@ func write(csvfile string, outfile string, isUtf8 bool) error {
 		field := fields[j]
 		kind := kinds[j]
 		if kind == "float" {
-			kind = "float64"
+			kind = "float32"
 		}
 		code = code + fmt.Sprintf("\t%v %v `csv:\"%v\"` //%v\n", upper(field), kind, field, name)
 	}

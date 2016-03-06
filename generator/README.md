@@ -3,11 +3,11 @@ Usage
 
 Run:
 
-    go run csvgenerator.go
+    go run csvgenc.go -csvpath ./data
     
 
 Install:
 
-    go build csvgenerator.go
+    go build csvgenc.go
 
 
