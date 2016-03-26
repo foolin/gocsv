@@ -186,6 +186,7 @@ func ReadMap(file string, isUtf8 bool, keyField string, out interface{}) (err er
 	err = ReadRaw(file, isUtf8, func(fields []Field) error {
 		elmv := reflect.Indirect(reflect.New(elmt))
 		keyi := 0
+		isMatchKey := false
 		for _, f := range fields {
 			if len(f.Name) <= 0 {
 				continue
@@ -196,6 +197,7 @@ func ReadMap(file string, isUtf8 bool, keyField string, out interface{}) (err er
 			}
 			if f.Name == keyField {
 				keyi = idx
+				isMatchKey = true
 			}
 			switch f.Kind {
 			case "int":
@@ -214,6 +216,9 @@ func ReadMap(file string, isUtf8 bool, keyField string, out interface{}) (err er
 				itemValue := f.Value
 				elmv.Field(idx).SetString(itemValue)
 			}
+		}
+		if !isMatchKey{
+			return errors.New(fmt.Sprintf("Primary key not found, \"%v\" not has field name \"%v\"",file, keyField))
 		}
 		mapv.SetMapIndex(elmv.Field(keyi), elmv)
 		return nil
