@@ -18,7 +18,7 @@ func main() {
 	//======================= read map[string]interface{} ===================//
 	fmt.Println("\n------------- read  -------------")
 	//datautf8.csv utf8 file
-	data, err := gocsv.Read("datautf8.csv", true)
+	data, err := gocsv.Read("datautf8.csv", false)
 	if err != nil {
 		panic(fmt.Sprintf("read error: %v", err))
 		return
@@ -30,7 +30,7 @@ func main() {
 	fmt.Println("\n------------- read list  -------------")
 	var list []Goods
 	//data.csv ANSI(excel default)
-	err = gocsv.ReadList("data.csv", false, &list)
+	err = gocsv.ReadList("data.csv", true, &list)
 	if err != nil {
 		fmt.Printf("read error: %v", err)
 		return
@@ -42,7 +42,7 @@ func main() {
 	fmt.Println("\n------------- read map  -------------")
 	var vmap map[int]Goods
 	//data.csv ANSI(excel default)
-	err = gocsv.ReadMap("data.csv", false, "id", &vmap)
+	err = gocsv.ReadMap("data.csv", true, "id", &vmap)
 	if err != nil {
 		fmt.Printf("read error: %v", err)
 		return
@@ -52,7 +52,7 @@ func main() {
 	//======================= read parser ===================//
 	fmt.Println("\n------------- read parser  -------------")
 	line := 1
-	err = gocsv.ReadRaw("data.csv", false, func(fields []gocsv.Field) error {
+	err = gocsv.ReadRaw("data.csv", true, func(fields []gocsv.Field) error {
 		fmt.Printf("-line %v\n", line)
 		for _, f := range fields {
 			fmt.Printf("%#v\n", f)

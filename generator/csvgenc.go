@@ -67,13 +67,6 @@ func main() {
 
 }
 
-//Goods goods struct for csv
-type Goods struct {
-	ID   int `csv:"id"`        //id => ID
-	Name string                // name => Name (default, first letter lowercase)
-	Cost float32 `csv:"price"` // rename price => cost
-}
-
 func write(csvfile string, outfile string, isUtf8 bool) error {
 	//open file
 	fi, err := os.Open(csvfile)

@@ -21,7 +21,7 @@ type Field struct {
 
 
 //Read read for map array
-func Read(file string, isUtf8 bool) (list []map[string]interface{}, err error) {
+func Read(file string, isGbk bool) (list []map[string]interface{}, err error) {
 	//catch panic
 	defer func() {
 		if rerr := recover(); rerr != nil {
@@ -30,7 +30,7 @@ func Read(file string, isUtf8 bool) (list []map[string]interface{}, err error) {
 	}()
 
 	list = make([]map[string]interface{}, 0);
-	err = ReadRaw(file, isUtf8, func(fields []Field) error {
+	err = ReadRaw(file, isGbk, func(fields []Field) error {
 		item := make(map[string]interface{})
 		for _, f := range fields {
 			if len(f.Name) <= 0 {
@@ -61,7 +61,7 @@ func Read(file string, isUtf8 bool) (list []map[string]interface{}, err error) {
 }
 
 //ReadList read for []struct
-func ReadList(file string, isUtf8 bool, out interface{}) (err error) {
+func ReadList(file string, isGbk bool, out interface{}) (err error) {
 	//catch panic
 	defer func() {
 		if rerr := recover(); rerr != nil {
@@ -101,7 +101,7 @@ func ReadList(file string, isUtf8 bool, out interface{}) (err error) {
 		idxs[format(name)] = i
 	}
 
-	err = ReadRaw(file, isUtf8, func(fields []Field) error {
+	err = ReadRaw(file, isGbk, func(fields []Field) error {
 		elmv := reflect.Indirect(reflect.New(elmt))
 		for _, f := range fields {
 			if len(f.Name) <= 0 {
@@ -138,7 +138,7 @@ func ReadList(file string, isUtf8 bool, out interface{}) (err error) {
 
 
 //ReadList read for map[interface{}]struct
-func ReadMap(file string, isUtf8 bool, keyField string, out interface{}) (err error) {
+func ReadMap(file string, isGbk bool, keyField string, out interface{}) (err error) {
 	//catch panic
 	defer func() {
 		if rerr := recover(); rerr != nil {
@@ -183,7 +183,7 @@ func ReadMap(file string, isUtf8 bool, keyField string, out interface{}) (err er
 		idxs[format(name)] = i
 	}
 
-	err = ReadRaw(file, isUtf8, func(fields []Field) error {
+	err = ReadRaw(file, isGbk, func(fields []Field) error {
 		elmv := reflect.Indirect(reflect.New(elmt))
 		keyi := 0
 		isMatchKey := false
@@ -230,7 +230,7 @@ func ReadMap(file string, isUtf8 bool, keyField string, out interface{}) (err er
 
 
 //Read read csv for handle
-func ReadRaw(file string, isUtf8 bool, handle func([]Field) error) (err error) {
+func ReadRaw(file string, isGbk bool, handle func([]Field) error) (err error) {
 	//catch panic
 	defer func() {
 		if rerr := recover(); rerr != nil {
@@ -246,7 +246,7 @@ func ReadRaw(file string, isUtf8 bool, handle func([]Field) error) (err error) {
 	defer fi.Close()
 	//get reader
 	var reader *csv.Reader
-	if isUtf8 {
+	if !isGbk {
 		reader = csv.NewReader(fi)
 	} else {
 		//transform gbk to utf8
@@ -270,9 +270,9 @@ func ReadRaw(file string, isUtf8 bool, handle func([]Field) error) (err error) {
 		itemFields := make([]Field, fieldNum, fieldNum)
 		for j := 0; j < fieldNum; j++ {
 			itemField := Field{
-				Name: names[j],
-				Value: line[j],
-				Kind: kinds[j],
+				Name: trim(names[j]),
+				Value: trim(line[j]),
+				Kind: trim(kinds[j]),
 
 			}
 			itemFields[j] = itemField
@@ -289,4 +289,8 @@ func ReadRaw(file string, isUtf8 bool, handle func([]Field) error) (err error) {
 //format format name
 func format(name string) string {
 	return fmt.Sprintf("%v%v", strings.ToLower(name[0:1]), name[1:])
+}
+
+func trim(s string) string  {
+	return strings.TrimSpace(s)
 }
