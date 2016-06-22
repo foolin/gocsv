@@ -30,14 +30,14 @@ func main() {
 		return
 	}
 	isOutOneFile := false
-	if *outpath != "" && strings.ToLower(filepath.Ext(*outpath)) == ".json" {
+	if *outpath != "" && (strings.ToLower(filepath.Ext(*outpath)) == ".json" || strings.ToLower(filepath.Ext(*outpath)) == ".cson") {
 		isOutOneFile = true
 	}
 	if *outpath == "" {
 		*outpath = *csvpath
 	}
 
-	mapAllList := make(map[string]interface{}, 0)
+	mapAllList := make(map[string][][]string, 0)
 	if fileInfo.IsDir() {
 		infos, err := ioutil.ReadDir(*csvpath)
 		if err != nil {
@@ -54,7 +54,7 @@ func main() {
 			}
 
 			name := filename(info.Name());
-			list, err := gocsv.Read(path.Join(*csvpath, info.Name()), true)
+			list, err := gocsv.ReadLines(path.Join(*csvpath, info.Name()), true)
 			if err != nil {
 				log.Fatalf("read csv: %v, error: %v", info.Name(), err)
 				return
@@ -76,7 +76,7 @@ func main() {
 
 	} else {
 		name := upper(filename(fileInfo.Name()));
-		list, err := gocsv.Read(path.Join(*csvpath, fileInfo.Name()), true)
+		list, err := gocsv.ReadLines(path.Join(*csvpath, fileInfo.Name()), true)
 		if err != nil {
 			log.Fatalf("read csv error: %v", err)
 			return

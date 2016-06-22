@@ -1,0 +1,5 @@
+Goods Id,Goods Name,¼Û¸ñ
+id,goods_name,price
+int,string,float
+1,Apple,5999.99
+2,Mobile,1999

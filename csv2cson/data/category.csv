@@ -1,0 +1,8 @@
+Category ID,Category name
+id,goods_name
+int,string
+1,Agriculture & Food
+2,"Apparel,Textiles & Accessories"
+3,Auto & Transportation
+4,"Bags, Shoes & Accessories"
+5,Electronics

@@ -142,6 +142,7 @@ func writeFile(outFile string, content []byte) error  {
 	//mkdir
 	outAbs, _ := filepath.Abs(outFile)
 	outDir := filepath.Base(filepath.Dir(outAbs))
+	log.Printf("%v", outDir)
 	err := os.MkdirAll(outDir, 0755)
 	if err != nil {
 		return err

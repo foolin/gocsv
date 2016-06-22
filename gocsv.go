@@ -228,9 +228,8 @@ func ReadMap(file string, isGbk bool, keyField string, out interface{}) (err err
 }
 
 
-
 //Read read csv for handle
-func ReadRaw(file string, isGbk bool, handle func([]Field) error) (err error) {
+func ReadLines(file string, isGbk bool) (lines [][]string, err error) {
 	//catch panic
 	defer func() {
 		if rerr := recover(); rerr != nil {
@@ -241,7 +240,7 @@ func ReadRaw(file string, isGbk bool, handle func([]Field) error) (err error) {
 	//open file
 	fi, err := os.Open(file)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer fi.Close()
 	//get reader
@@ -253,8 +252,20 @@ func ReadRaw(file string, isGbk bool, handle func([]Field) error) (err error) {
 		r := transform.NewReader(fi, simplifiedchinese.GBK.NewDecoder())
 		reader = csv.NewReader(r)
 	}
+	lines, err = reader.ReadAll()
+	return
+}
 
-	lines, err := reader.ReadAll()
+
+//Read read csv for handle
+func ReadRaw(file string, isGbk bool, handle func([]Field) error) (err error) {
+	//catch panic
+	defer func() {
+		if rerr := recover(); rerr != nil {
+			err = errors.New(fmt.Sprintf("read csv file: %v, error: %v", file, rerr))
+		}
+	}()
+	lines, err := ReadLines(file, isGbk)
 	if err != nil {
 		return err
 	}
