@@ -111,23 +111,8 @@ func ReadList(file string, isGbk bool, out interface{}) (err error) {
 			if !ok {
 				continue
 			}
-			switch f.Kind {
-			case "int":
-				itemValue, innerr := strconv.ParseInt(f.Value, 10, 64)
-				if innerr != nil {
-					itemValue = 0
-				}
-				elmv.Field(idx).SetInt(itemValue)
-			case "float":
-				itemValue, innerr := strconv.ParseFloat(f.Value, 64)
-				if innerr != nil {
-					itemValue = 0
-				}
-				elmv.Field(idx).SetFloat(itemValue)
-			default:
-				itemValue := f.Value
-				elmv.Field(idx).SetString(itemValue)
-			}
+			fValue := elmv.Field(idx)
+			setValue(&fValue, f)
 		}
 		slicev.Set(reflect.Append(slicev, elmv))
 		return nil
@@ -199,23 +184,8 @@ func ReadMap(file string, isGbk bool, keyField string, out interface{}) (err err
 				keyi = idx
 				isMatchKey = true
 			}
-			switch f.Kind {
-			case "int":
-				itemValue, innerr := strconv.ParseInt(f.Value, 10, 64)
-				if innerr != nil {
-					itemValue = 0
-				}
-				elmv.Field(idx).SetInt(itemValue)
-			case "float":
-				itemValue, innerr := strconv.ParseFloat(f.Value, 64)
-				if innerr != nil {
-					itemValue = 0
-				}
-				elmv.Field(idx).SetFloat(itemValue)
-			default:
-				itemValue := f.Value
-				elmv.Field(idx).SetString(itemValue)
-			}
+			fValue := elmv.Field(idx)
+			setValue(&fValue, f)
 		}
 		if !isMatchKey{
 			return errors.New(fmt.Sprintf("Primary key not found, \"%v\" not has field name \"%v\"",file, keyField))
@@ -256,6 +226,31 @@ func ReadLines(file string, isGbk bool) (lines [][]string, err error) {
 	return
 }
 
+func setValue(elmv *reflect.Value, f Field)  {
+	switch f.Kind {
+	case "int", "int64", "long":
+		itemValue, innerr := strconv.ParseInt(f.Value, 10, 64)
+		if innerr != nil {
+			itemValue = 0
+		}
+		elmv.SetInt(itemValue)
+	case "float", "float64", "double":
+		itemValue, innerr := strconv.ParseFloat(f.Value, 64)
+		if innerr != nil {
+			itemValue = 0
+		}
+		elmv.SetFloat(itemValue)
+	case "bool":
+		itemValue, innerr := strconv.ParseBool(f.Value)
+		if innerr != nil {
+			itemValue = false
+		}
+		elmv.SetBool(itemValue)
+	default:
+		itemValue := f.Value
+		elmv.SetString(itemValue)
+	}
+}
 
 //Read read csv for handle
 func ReadRaw(file string, isGbk bool, handle func([]Field) error) (err error) {
