@@ -90,9 +90,16 @@ func ReadList(file string, isGbk bool, out interface{}) (err error) {
 	}
 
 	elmt := slicet.Elem()
+	elmIsPtr := false
+	//element is ptr
+	if elmt.Kind() == reflect.Ptr{
+		elmt = elmt.Elem()
+		elmIsPtr = true
+	}
 
 	//map field => value
 	idxs := make(map[string]int)
+
 	for i := 0; i < elmt.NumField(); i++ {
 		name := elmt.Field(i).Tag.Get("csv")
 		if len(name) <= 0 {
@@ -114,7 +121,11 @@ func ReadList(file string, isGbk bool, out interface{}) (err error) {
 			fValue := elmv.Field(idx)
 			setValue(&fValue, f)
 		}
-		slicev.Set(reflect.Append(slicev, elmv))
+		if elmIsPtr{
+			slicev.Set(reflect.Append(slicev, elmv.Addr()))
+		}else{
+			slicev.Set(reflect.Append(slicev, elmv))
+		}
 		return nil
 	})
 
@@ -157,6 +168,12 @@ func ReadMap(file string, isGbk bool, keyField string, out interface{}) (err err
 	}
 
 	elmt := mapt.Elem()
+	elmIsPtr := false
+	//element is ptr
+	if elmt.Kind() == reflect.Ptr{
+		elmt = elmt.Elem()
+		elmIsPtr = true
+	}
 
 	//map field => value
 	idxs := make(map[string]int)
@@ -190,7 +207,11 @@ func ReadMap(file string, isGbk bool, keyField string, out interface{}) (err err
 		if !isMatchKey{
 			return errors.New(fmt.Sprintf("Primary key not found, \"%v\" not has field name \"%v\"",file, keyField))
 		}
-		mapv.SetMapIndex(elmv.Field(keyi), elmv)
+		if elmIsPtr{
+			mapv.SetMapIndex(elmv.Field(keyi), elmv.Addr())
+		}else{
+			mapv.SetMapIndex(elmv.Field(keyi), elmv)
+		}
 		return nil
 	})
 
@@ -260,6 +281,9 @@ func ReadRaw(file string, isGbk bool, handle func([]Field) error) (err error) {
 			err = errors.New(fmt.Sprintf("read csv file: %v, error: %v", file, rerr))
 		}
 	}()
+	if file == ""{
+		return errors.New("read csv file parameter is empty.")
+	}
 	lines, err := ReadLines(file, isGbk)
 	if err != nil {
 		return err

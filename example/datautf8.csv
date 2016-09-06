@@ -1,4 +1,4 @@
-﻿Goods Id,Goods Name,Sell Price
+Goods Id,Goods Name,Sell Price
 id,name,cost
 int,string,float
 1,Apple iPhone 6s,5999.99

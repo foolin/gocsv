@@ -26,28 +26,50 @@ func main() {
 	fmt.Printf("%#v\n", data)
 
 
-	//======================= read list ===================//
-	fmt.Println("\n------------- read list  -------------")
-	var list []Goods
+	//======================= read list struct ===================//
+	fmt.Println("\n------------- read list struct -------------")
+	var list1 []Goods
 	//data.csv ANSI(excel default)
-	err = gocsv.ReadList("data.csv", true, &list)
+	err = gocsv.ReadList("data.csv", true, &list1)
 	if err != nil {
 		fmt.Printf("read error: %v", err)
 		return
 	}
-	fmt.Printf("%#v\n", list)
+	fmt.Printf("%#v\n", list1)
 
-
-	//======================= read map ===================//
-	fmt.Println("\n------------- read map  -------------")
-	var vmap map[int]Goods
+	//======================= read list ptr ===================//
+	fmt.Println("\n------------- read list ptr  -------------")
+	var list2 []*Goods
 	//data.csv ANSI(excel default)
-	err = gocsv.ReadMap("data.csv", true, "id", &vmap)
+	err = gocsv.ReadList("data.csv", true, &list2)
 	if err != nil {
 		fmt.Printf("read error: %v", err)
 		return
 	}
-	fmt.Printf("%#v\n", vmap)
+	fmt.Printf("%#v\n", list2)
+
+
+	//======================= read map struct ===================//
+	fmt.Println("\n------------- read map struct -------------")
+	var map1 map[int]Goods
+	//data.csv ANSI(excel default)
+	err = gocsv.ReadMap("data.csv", true, "id", &map1)
+	if err != nil {
+		fmt.Printf("read error: %v", err)
+		return
+	}
+	fmt.Printf("%#v\n", map1)
+
+	//======================= read map ptr ===================//
+	fmt.Println("\n------------- read map ptr  -------------")
+	var map2 map[int]*Goods
+	//data.csv ANSI(excel default)
+	err = gocsv.ReadMap("data.csv", true, "id", &map2)
+	if err != nil {
+		fmt.Printf("read error: %v", err)
+		return
+	}
+	fmt.Printf("%#v\n", map2)
 
 	//======================= read parser ===================//
 	fmt.Println("\n------------- read parser  -------------")
