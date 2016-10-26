@@ -122,7 +122,7 @@ func write(csvfile string, outfile string, isUtf8 bool) error {
 	code = code + "}\n"
 
 	//mkdir
-	err = os.MkdirAll(path.Dir(outAbs), 0755)
+	err = os.MkdirAll(filepath.Dir(outAbs), 0755)
 	if err != nil {
 		return err
 	}
