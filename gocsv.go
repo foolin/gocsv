@@ -250,13 +250,13 @@ func ReadLines(file string, isGbk bool) (lines [][]string, err error) {
 func setValue(elmv *reflect.Value, f Field)  {
 	switch f.Kind {
 	case "int", "int64", "long":
-		itemValue, innerr := strconv.ParseInt(f.Value, 10, 64)
+		itemValue, innerr := parseInt(f.Value)
 		if innerr != nil {
 			itemValue = 0
 		}
 		elmv.SetInt(itemValue)
 	case "float", "float64", "double":
-		itemValue, innerr := strconv.ParseFloat(f.Value, 64)
+		itemValue, innerr := parseFloat(f.Value)
 		if innerr != nil {
 			itemValue = 0
 		}
@@ -271,6 +271,34 @@ func setValue(elmv *reflect.Value, f Field)  {
 		itemValue := f.Value
 		elmv.SetString(itemValue)
 	}
+}
+
+func parseInt(val string) (int64, error)  {
+	iVal, err := strconv.ParseInt(val, 10, 64)
+	if err == nil {
+		return iVal, nil
+	}
+	//"4.29E+12"
+	var eval float64
+	_, err = fmt.Sscanf(val, "%e", &eval)
+	if err != nil {
+		return 0, err
+	}
+	return int64(eval), err
+}
+
+func parseFloat(val string) (float64, error)  {
+	iVal, err := strconv.ParseFloat(val, 64)
+	if err == nil {
+		return iVal, nil
+	}
+	//"4.29E+12"
+	var eval float64
+	_, err = fmt.Sscanf(val, "%e", &eval)
+	if err != nil {
+		return 0, err
+	}
+	return eval, err
 }
 
 //Read read csv for handle
